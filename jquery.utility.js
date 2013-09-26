@@ -130,9 +130,29 @@
 	 *	$.parseCsharpDate('@Html.Raw(Json.Encode(System.DateTime.Now))');
 	 */
 	$.parseCsharpDate = function (date) {
-		return date == null
-			? new Date()
-			: new Date(parseInt(date.replace(/\D/g, '')));
+		if (typeof (date) == "undefined" || date == null) {
+			return new Date();
+		}
+		if ($.isArray(date)) {
+			for (var i = 0, ii = date.length; i < ii; i++) {
+				if (typeof (date[i]) != "string")
+					continue;
+				date[i] = arguments.callee(date[i]);
+			}
+			return date;
+		}
+		if (typeof (date) == "object") {
+			for (var key in date) {
+				if (!date.hasOwnProperty(key) || typeof (date[key]) != "string")
+					continue;
+				date[key] = arguments.callee(date[key]);
+			}
+		}
+		//hanya parsing jika sesuai dengan format dari C#
+		if (!/\/Date\(([\d\-\.]+)\)\//i.test(date))
+			return date;
+		var number = date.replace(/[^\d\-\.]/g, '');
+		return new Date(parseInt(number));
 	};
 
 	/**

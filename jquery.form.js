@@ -304,7 +304,7 @@
 				$field = $(this),
 				widget = $field.data('role'),
 				tipe = $field.attr('type');
-				if (!/^\s*$/g.test(widget) && typeof (kendo.mapping[widget]) != "undefined") {
+				if (!$.isEmpty(widget) && typeof (kendo.mapping[widget]) != "undefined") {
 					$field.data(kendo.mapping[widget]).value('');
 				} else if (tipe == 'checkbox' || tipe == 'radio') {
 					$field.removeAttr('checked');
@@ -322,7 +322,7 @@
 					widget = $field.data('role'),
 					tipe = $field.attr('type');
 					if ($field.length > 0) {
-						if (!/^\s*$/g.test(widget) && typeof (kendo.mapping[widget]) != "undefined") {
+						if (!$.isEmpty(widget) && typeof (kendo.mapping[widget]) != "undefined") {
 							$field.data(kendo.mapping[widget]).value(nilai);
 						} else if (tipe == 'checkbox' || tipe == 'radio') {
 							nilai ? $field.attr('checked', 'checked') : $field.removeAttr('checked');
